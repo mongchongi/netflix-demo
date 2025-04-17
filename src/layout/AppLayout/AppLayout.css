@@ -1,0 +1,65 @@
+.nav {
+  display: flex;
+  align-items: center;
+  padding: 0 60px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 70px;
+}
+
+.nav__logo-image {
+  width: 90px;
+  display: block;
+}
+
+.nav__path-list {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  flex-grow: 1;
+}
+
+.nav__path-link {
+  text-decoration: none;
+  color: #cccccd;
+  font-size: 14px;
+  transition: opacity 0.3s;
+}
+
+.nav__path-link:hover {
+  opacity: 0.7;
+}
+
+.nav__path-link--active {
+  color: white;
+}
+
+.nav__search {
+  width: 24px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  overflow: hidden;
+}
+
+.nav__search--active {
+  width: 300px;
+  border: 1px solid white;
+  background: black;
+  padding: 8px;
+}
+
+.nav__search-icon {
+  color: white;
+  cursor: pointer;
+}
+
+.nav__search-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: white;
+}
