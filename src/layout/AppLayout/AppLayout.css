@@ -2,11 +2,12 @@
   display: flex;
   align-items: center;
   padding: 0 60px;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+  background: linear-gradient(to bottom, black, transparent);
   position: fixed;
   top: 0;
   width: 100%;
   height: 70px;
+  z-index: 1;
 }
 
 .nav__logo-image {
@@ -19,6 +20,7 @@
   display: flex;
   gap: 20px;
   flex-grow: 1;
+  margin: 0;
 }
 
 .nav__path-link {
@@ -62,4 +64,29 @@
   outline: none;
   background: transparent;
   color: white;
+}
+
+@media all and (max-width: 768px) {
+  .nav {
+    padding: 10px 20px;
+    flex-direction: column;
+    align-items: start;
+    height: auto;
+  }
+
+  .nav__top {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav__path-list {
+    padding: 0;
+    margin-top: 10px;
+  }
+
+  .nav__search--active {
+    width: 225px;
+  }
 }

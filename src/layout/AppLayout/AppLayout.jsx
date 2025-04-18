@@ -4,15 +4,17 @@ import netflixLogo from '../../assets/netflix-logo.png';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 const AppLayout = () => {
   const [showSearch, setShowSearch] = useState(false);
-  const [selectedPath, setSelectedPath] = useState('');
 
   const location = useLocation();
 
   const searchRef = useRef(null);
   const searchInputRef = useRef(null);
+
+  const isMobile = useIsMobile();
 
   const paths = [
     {
@@ -28,10 +30,6 @@ const AppLayout = () => {
       url: '/favorites',
     },
   ];
-
-  useEffect(() => {
-    setSelectedPath(location.pathname);
-  }, [location]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -55,39 +53,69 @@ const AppLayout = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [searchRef]);
 
+  const renderLogo = () => {
+    return (
+      <div className='nav__logo'>
+        <Link to={'/'}>
+          <img src={netflixLogo} alt='logo' className='nav__logo-image' />
+        </Link>
+      </div>
+    );
+  };
+
+  const renderPaths = () => {
+    return (
+      <ul className='nav__path-list'>
+        {paths.map((path) => (
+          <li key={path.name} className='nav__path-item'>
+            <Link
+              to={path.url}
+              className={`nav__path-link ${location.pathname === path.url ? 'nav__path-link--active' : undefined}`}
+            >
+              {path.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
+  const renderSearch = () => {
+    return (
+      <div
+        className={`nav__search ${showSearch ? 'nav__search--active' : undefined}`}
+        style={{ transition: `${showSearch ? 'width 0.3s' : 'none'}` }}
+        ref={searchRef}
+      >
+        <FontAwesomeIcon
+          icon={faMagnifyingGlass}
+          size='xl'
+          className='nav__search-icon'
+          onClick={() => setShowSearch((prev) => !prev)}
+        />
+        <input type='text' className='nav__search-input' placeholder='제목, 장르' ref={searchInputRef} />
+      </div>
+    );
+  };
+
   return (
     <>
       <nav className='nav'>
-        <div className='nav__logo'>
-          <Link to={'/'}>
-            <img src={netflixLogo} alt='logo' className='nav__logo-image' />
-          </Link>
-        </div>
-        <ul className='nav__path-list'>
-          {paths.map((path) => (
-            <li key={path.name}>
-              <Link
-                to={path.url}
-                className={`nav__path-link ${selectedPath === path.url ? 'nav__path-link--active' : undefined}`}
-              >
-                {path.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <div
-          className={`nav__search ${showSearch ? 'nav__search--active' : undefined}`}
-          style={{ transition: `${showSearch ? 'width 0.3s' : 'none'}` }}
-          ref={searchRef}
-        >
-          <FontAwesomeIcon
-            icon={faMagnifyingGlass}
-            size='xl'
-            className='nav__search-icon'
-            onClick={() => setShowSearch((prev) => !prev)}
-          />
-          <input type='text' className='nav__search-input' placeholder='제목, 장르' ref={searchInputRef} />
-        </div>
+        {isMobile ? (
+          <>
+            <div className='nav__top'>
+              {renderLogo()}
+              {renderSearch()}
+            </div>
+            {renderPaths()}
+          </>
+        ) : (
+          <>
+            {renderLogo()}
+            {renderPaths()}
+            {renderSearch()}
+          </>
+        )}
       </nav>
       <Outlet />
     </>
